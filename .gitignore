@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+wheels/
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Output files (generated at runtime)
+margin_output/
+*.csv
+
+# Secrets — NEVER commit
+.env.prod
+sf_credentials.json
