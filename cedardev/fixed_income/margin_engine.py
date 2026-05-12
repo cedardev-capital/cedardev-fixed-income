@@ -577,7 +577,18 @@ class CrossMarginEngine:
             sub = sub.set_index("bucket_label")
 
             # Re-index to ensure all 6 buckets present (fill 0 for missing)
-            sub = sub.reindex([b.value for b in BUCKET_ORDER], fill_value=0)
+            sub = sub.reindex([b.value for b in BUCKET_ORDER]).fillna({
+                "long_dv01":      0.0,
+                "short_dv01":     0.0,
+                "long_mv":        0.0,
+                "short_mv":       0.0,
+                "position_count": 0,
+                "net_dv01":       0.0,
+                "gross_mv":       0.0,
+                "dv01_offset_pct":0.0,
+                "portfolio_id":   sub["portfolio_id"].iloc[0] if len(sub) else "",
+                "bucket_label":   "",
+            })
 
             net_dv01_vec   = sub["net_dv01"].to_numpy(dtype=np.float64)
             gross_mv_vec   = sub["gross_mv"].to_numpy(dtype=np.float64)
