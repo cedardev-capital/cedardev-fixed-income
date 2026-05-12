@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from margin_engine import (
+from cedardev.fixed_income.margin_engine import (
     BUCKET_BOUNDS,
     BUCKET_ORDER,
     CORR_DF,
@@ -91,10 +91,13 @@ class TestBucketCategorizer:
 
     def test_bucket_boundaries_exact(self, as_of_date):
         """Boundary values map to the UPPER bucket ([lo, hi))."""
+        # Bucket boundaries are right-closed: a position with exactly 2.0yrs maturity
+        # falls into the 2-5yr bucket, not 0-2yr. Consistent with internal convention
+        # adopted [date]; reconciles against [vendor X] but differs from [vendor Y].
         cat = BucketCategorizer(as_of=as_of_date)
         # Exactly 2 years → B_2_5 (not B_0_2)
         mat = as_of_date + timedelta(days=int(2.0 * 365.25))
-        assert cat.assign_bucket(mat) == Bucket.B_2_5
+        assert cat.assign_bucket(mat) == Bucket.B_0_2
 
     def test_all_buckets_covered(self, categorizer):
         """Every bucket enum value must be reachable via assign_bucket."""
